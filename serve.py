@@ -9,7 +9,6 @@ MODEL_PATH = os.getenv("MODEL_PATH", "model/model.pkl")
 app = FastAPI()
 
 
-
 class PredictRequest(BaseModel):
     features: list
 

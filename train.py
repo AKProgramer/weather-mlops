@@ -1,4 +1,3 @@
-
 import os
 import pandas as pd
 import numpy as np
@@ -54,9 +53,7 @@ def train_and_log():
         X_aligned = Xy.drop(columns=["__target__"])
 
         if X_aligned.shape[0] < 4:
-            msg = (
-                f"Not enough data after cleaning to train/test split (n={X_aligned.shape[0]})."
-            )
+            msg = f"Not enough data after cleaning to train/test split (n={X_aligned.shape[0]})."
             print(msg)
             mlflow.set_tag("training_skipped", "true")
             mlflow.log_param("num_rows_after_clean", int(X_aligned.shape[0]))
@@ -64,13 +61,13 @@ def train_and_log():
 
         # Train/test split
         from sklearn.model_selection import train_test_split
+
         X_train, X_test, y_train, y_test = train_test_split(
             X_aligned, y_aligned, test_size=0.2, random_state=42
         )
 
         mlflow.log_param("train_size", int(X_train.shape[0]))
         mlflow.log_param("test_size", int(X_test.shape[0]))
-
 
         model = LinearRegression()
 
@@ -109,7 +106,9 @@ def train_and_log():
             # Upload model folder as artifacts instead of using model registry
             mlflow.log_artifact(local_model_path)
 
-            print(f"Logged run: TRAIN_RMSE={train_rmse:.3f}, TEST_RMSE={test_rmse:.3f}, TRAIN_R2={train_r2:.3f}, TEST_R2={test_r2:.3f}")
+            print(
+                f"Logged run: TRAIN_RMSE={train_rmse:.3f}, TEST_RMSE={test_rmse:.3f}, TRAIN_R2={train_r2:.3f}, TEST_R2={test_r2:.3f}"
+            )
 
         except Exception as e:
             mlflow.set_tag("training_error", str(e))
