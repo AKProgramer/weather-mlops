@@ -8,3 +8,4 @@ fastparquet
 ydata-profiling
 httpx
 cml
+prometheus-client

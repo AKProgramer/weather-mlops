@@ -363,7 +363,48 @@ services:
     command: server /data --console-address ":9001"
     restart: always
 
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: always
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/provisioning/dashboards:/var/lib/grafana/dashboards
+    restart: always
+
+  # FastAPI App for serving model
+  app:
+    image: yourdockerhubuser/app:latest  # Update with your image
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/app/model
+    volumes:
+      - ./model:/app/model
+    restart: always
+
 volumes:
   postgres-db-volume:
   mlflow-data:
   minio-data:
+  grafana-data:
