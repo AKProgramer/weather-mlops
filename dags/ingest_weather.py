@@ -1,8 +1,8 @@
 # dags/ingest_weather.py
 
+
 from airflow.decorators import dag, task
 import pendulum
-from airflow.models import Variable
 from datetime import timedelta
 
 # Open-Meteo API endpoint and parameters
@@ -14,13 +14,22 @@ PROC_DIR = "/opt/airflow/data/processed"
 
 default_args = {"retries": 1, "retry_delay": timedelta(minutes=2)}
 
-@dag(schedule="@hourly", start_date=pendulum.datetime(2025, 11, 29, 0, 0, 0, tz="UTC"), catchup=False, default_args=default_args, tags=["rps", "ingest"])
+@dag(
+    schedule="@hourly",
+    start_date=pendulum.datetime(2025, 11, 29, 0, 0, 0, tz="UTC"),
+    catchup=False,
+    default_args=default_args,
+    tags=["rps", "ingest"]
+)
 def ingest_weather():
 
     @task()
     def extract_raw():
         """Extract weather data from Open-Meteo API"""
-        import os, requests, json, datetime
+        import os
+        import requests
+        import json
+        import datetime
         os.makedirs(RAW_DIR, exist_ok=True)
         params = {
             "latitude": LAT,
@@ -59,7 +68,10 @@ def ingest_weather():
     @task()
     def transform_features(raw_path: str):
         """Transform raw data into features for prediction"""
-        import json, pandas as pd, datetime, os
+        import json
+        import pandas as pd
+        import datetime
+        import os
         os.makedirs(PROC_DIR, exist_ok=True)
         with open(raw_path) as f:
             payload = json.load(f)
@@ -94,7 +106,9 @@ def ingest_weather():
         """Generate data profile report and log to MLflow"""
         import pandas as pd
         from ydata_profiling import ProfileReport
-        import mlflow, os, datetime
+        import mlflow
+        import os
+        import datetime
         df = pd.read_parquet(processed_path)
         prof = ProfileReport(df, title="Weather Data Profile", minimal=True, explorative=True)
         html_path = processed_path.replace(".parquet", "_profile.html")
@@ -116,7 +130,8 @@ def ingest_weather():
     @task()
     def dvc_add_and_push(processed_path: str):
         """Version the processed dataset with DVC"""
-        import subprocess, pathlib
+        import subprocess
+        import pathlib
         try:
             result = subprocess.run(
                 ["dvc", "add", processed_path],
@@ -142,15 +157,17 @@ def ingest_weather():
 
 
     raw = extract_raw()
-    ok = dq_check(raw)
+    dq_check(raw)
     proc = transform_features(raw)
-    prof = profile_and_log(proc)
-    push = dvc_add_and_push(proc)
+    profile_and_log(proc)
+    dvc_add_and_push(proc)
 
     @task()
     def train_model(processed_path: str):
         """Train model and log experiment to MLflow"""
-        import subprocess, sys, os
+        import subprocess
+        import sys
+        import os
         # Use the latest processed file
         env = os.environ.copy()
         env["PROCESSED_DATA_PATH"] = processed_path
@@ -165,6 +182,6 @@ def ingest_weather():
         print("\u2705 Model training and MLflow logging complete.")
         return True
 
-    train = train_model(proc)
+    train_model(proc)
 
 ingest_weather = ingest_weather()

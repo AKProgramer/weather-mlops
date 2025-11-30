@@ -3,14 +3,16 @@ import pickle
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import numpy as np
-import pandas as pd
 
 MODEL_PATH = os.getenv("MODEL_PATH", "model/model.pkl")
 
 app = FastAPI()
 
+
+
 class PredictRequest(BaseModel):
     features: list
+
 
 @app.on_event("startup")
 def load_model():
@@ -22,9 +24,11 @@ def load_model():
         print(f"Failed to load model: {e}")
         model = None
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 @app.post("/predict")
 def predict(req: PredictRequest):

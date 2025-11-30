@@ -1,16 +1,16 @@
+
 import os
 import pandas as pd
 import numpy as np
 import mlflow
+import glob
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 # Set MLflow tracking URI to Dagshub
 mlflow.set_tracking_uri("https://dagshub.com/AKProgramer/weather-mlops.mlflow")
 
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-
 # Find the latest processed parquet file automatically
-import glob
 processed_files = glob.glob("data/processed/*.parquet")
 if not processed_files:
     raise FileNotFoundError("No processed parquet files found in data/processed/")
@@ -38,7 +38,9 @@ def train_and_log():
         X = df.drop(columns=["target"], errors="ignore")
 
         # Drop datetime columns
-        datetime_cols = X.select_dtypes(include=["datetime", "datetimetz", "datetime64[ns]"]).columns.tolist()
+        datetime_cols = X.select_dtypes(
+            include=["datetime", "datetimetz", "datetime64[ns]"]
+        ).columns.tolist()
         if "dt" in X.columns:
             datetime_cols.append("dt")
 
@@ -52,7 +54,9 @@ def train_and_log():
         X_aligned = Xy.drop(columns=["__target__"])
 
         if X_aligned.shape[0] < 4:
-            msg = f"Not enough data after cleaning to train/test split (n={X_aligned.shape[0]})."
+            msg = (
+                f"Not enough data after cleaning to train/test split (n={X_aligned.shape[0]})."
+            )
             print(msg)
             mlflow.set_tag("training_skipped", "true")
             mlflow.log_param("num_rows_after_clean", int(X_aligned.shape[0]))
