@@ -1,6 +1,7 @@
-import pytest
 from fastapi.testclient import TestClient
 from serve import app
+def test_health():
+  
 
 def test_health():
     client = TestClient(app)
