@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   pull_request:
-    branches: [dev, test, main, master]
+    branches: [dev, test, main]
   push:
-    branches: [dev, test, main, master]
+    branches: [dev, test, main]
 
 jobs:
   lint-test:
@@ -44,12 +44,15 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "## Model Metrics" > report.md
-          echo "RMSE: $(cat mlruns/latest/rmse.txt 2>/dev/null || echo 'N/A')" >> report.md
+          echo "## Model Metrics Comparison" > report.md
+          echo "### New Model Metrics" >> report.md
+          echo "Train RMSE: $(mlflow run info --run-id $(mlflow run list | head -1 | awk '{print $1}') | grep 'rmse' || echo 'N/A')" >> report.md
+          echo "### Production Model Metrics (from main)" >> report.md
+          echo "Compare manually or fetch from registry." >> report.md
           cml comment create report.md
 
   build-and-push:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,9 +60,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Fetch best model from MLflow Registry
+        run: |
+          mlflow models download --model-uri models:/weather-forecast/Production -d model
       - name: Build Docker image
         run: |
-          docker build -t yourdockerhubuser/app:${{ github.sha }} .
+          docker build -t yourdockerhubuser/app:v${{ github.run_number }} .
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -67,10 +75,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker image
         run: |
-          docker push yourdockerhubuser/app:${{ github.sha }}
+          docker push yourdockerhubuser/app:v${{ github.run_number }}
       - name: Deploy and health check
         run: |
-          docker run -d -p 8000:8000 --name test_app yourdockerhubuser/app:${{ github.sha }}
+          docker run -d -p 8000:8000 --name test_app yourdockerhubuser/app:v${{ github.run_number }}
           sleep 10
           curl --fail http://localhost:8000/health
           docker stop test_app

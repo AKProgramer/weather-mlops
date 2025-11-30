@@ -98,13 +98,12 @@ def train_and_log():
             mlflow.log_metric("test_r2", test_r2)
             mlflow.log_param("num_rows_after_clean", int(X_aligned.shape[0]))
 
-            # ---- DAGSHUB SAFE MODEL LOGGING ----
-            # Save model locally first
-            local_model_path = "model"
-            mlflow.sklearn.save_model(model, local_model_path)
+            # Log model to MLflow
+            mlflow.sklearn.log_model(model, "model")
 
-            # Upload model folder as artifacts instead of using model registry
-            mlflow.log_artifact(local_model_path)
+            # Register model in MLflow Model Registry
+            model_uri = f"runs:/{mlflow.active_run().info.run_id}/model"
+            mlflow.register_model(model_uri, "weather-forecast")
 
             print(
                 f"Logged run: TRAIN_RMSE={train_rmse:.3f}, TEST_RMSE={test_rmse:.3f}, TRAIN_R2={train_r2:.3f}, TEST_R2={test_r2:.3f}"
