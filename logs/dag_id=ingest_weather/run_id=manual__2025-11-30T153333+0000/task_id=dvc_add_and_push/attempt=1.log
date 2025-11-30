@@ -1,0 +1,19 @@
+{"timestamp":"2025-11-30T15:35:10.738391Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2025-11-30T15:35:10.743671Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/ingest_weather.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2025-11-30T15:35:18.108855Z","level":"info","event":"Pandas backend loaded 2.1.4","logger":"visions.backends","filename":"__init__.py","lineno":14}
+{"timestamp":"2025-11-30T15:35:18.152125Z","level":"info","event":"Numpy backend loaded 1.26.4","logger":"visions.backends","filename":"__init__.py","lineno":25}
+{"timestamp":"2025-11-30T15:35:18.186303Z","level":"info","event":"Pyspark backend NOT loaded","logger":"visions.backends","filename":"__init__.py","lineno":37}
+{"timestamp":"2025-11-30T15:35:18.194621Z","level":"info","event":"Python backend loaded","logger":"visions.backends","filename":"__init__.py","lineno":43}
+{"timestamp":"2025-11-30T15:35:39.737373Z","level":"warning","event":"The `airflow.decorators.dag` attribute is deprecated. Please use `'airflow.sdk.dag'`.","category":"DeprecatedImportWarning","filename":"/opt/airflow/dags/ingest_weather.py","lineno":2,"logger":"py.warnings"}
+{"timestamp":"2025-11-30T15:35:39.737966Z","level":"warning","event":"The `airflow.decorators.task` attribute is deprecated. Please use `'airflow.sdk.task'`.","category":"DeprecatedImportWarning","filename":"/opt/airflow/dags/ingest_weather.py","lineno":2,"logger":"py.warnings"}
+{"timestamp":"2025-11-30T15:35:39.874571Z","level":"info","event":"Task instance is in running state","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:39.878034Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:39.879191Z","level":"info","event":"Current task name:dvc_add_and_push","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:39.880195Z","level":"info","event":"Dag name:ingest_weather","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:48.677434Z","level":"info","event":"⚠️  DVC error: ERROR: you are not inside of a DVC repository (checked up to mount point '/')","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:48.698873Z","level":"info","event":"","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:48.730485Z","level":"info","event":"   Continuing without DVC versioning...","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:48.675696Z","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator","filename":"python.py","lineno":215}
+{"timestamp":"2025-11-30T15:35:48.834946Z","level":"info","event":"Task instance in success state","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:48.845018Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:35:48.847473Z","level":"info","event":"Task operator:<Task(_PythonDecoratedOperator): dvc_add_and_push>","logger":"task.stdout"}

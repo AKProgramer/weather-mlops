@@ -1,0 +1,10 @@
+[core]
+    no_scm = True
+    remote = minio
+['remote "minio"']
+    url = s3://dvc-storage
+    endpointurl = http://localhost:9000
+    access_key_id = minioadmin
+    secret_access_key = minioadmin
+['remote "origin"']
+    url = https://dagshub.com/AKProgramer/weather-mlops.dvc

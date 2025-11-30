@@ -1,0 +1,8 @@
+pandas
+requests
+ydata-profiling
+mlflow
+dvc
+pyarrow
+fastparquet
+ydata-profiling

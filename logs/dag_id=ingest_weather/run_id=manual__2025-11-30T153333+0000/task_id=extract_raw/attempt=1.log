@@ -1,0 +1,19 @@
+{"timestamp":"2025-11-30T15:34:03.663914Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2025-11-30T15:34:03.683217Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/ingest_weather.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2025-11-30T15:34:10.634386Z","level":"info","event":"Pandas backend loaded 2.1.4","logger":"visions.backends","filename":"__init__.py","lineno":14}
+{"timestamp":"2025-11-30T15:34:10.670644Z","level":"info","event":"Numpy backend loaded 1.26.4","logger":"visions.backends","filename":"__init__.py","lineno":25}
+{"timestamp":"2025-11-30T15:34:10.679963Z","level":"info","event":"Pyspark backend NOT loaded","logger":"visions.backends","filename":"__init__.py","lineno":37}
+{"timestamp":"2025-11-30T15:34:10.680998Z","level":"info","event":"Python backend loaded","logger":"visions.backends","filename":"__init__.py","lineno":43}
+{"timestamp":"2025-11-30T15:34:21.749273Z","level":"info","event":"generated new fontManager","logger":"matplotlib.font_manager","filename":"font_manager.py","lineno":1639}
+{"timestamp":"2025-11-30T15:34:33.395421Z","level":"warning","event":"The `airflow.decorators.dag` attribute is deprecated. Please use `'airflow.sdk.dag'`.","category":"DeprecatedImportWarning","filename":"/opt/airflow/dags/ingest_weather.py","lineno":2,"logger":"py.warnings"}
+{"timestamp":"2025-11-30T15:34:33.396117Z","level":"warning","event":"The `airflow.decorators.task` attribute is deprecated. Please use `'airflow.sdk.task'`.","category":"DeprecatedImportWarning","filename":"/opt/airflow/dags/ingest_weather.py","lineno":2,"logger":"py.warnings"}
+{"timestamp":"2025-11-30T15:34:33.528314Z","level":"info","event":"Task instance is in running state","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:33.534836Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:33.536609Z","level":"info","event":"Current task name:extract_raw","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:33.537741Z","level":"info","event":"Dag name:ingest_weather","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:34.912665Z","level":"info","event":"✅ Extracted weather data to: /opt/airflow/data/raw/weather_20251130_153434.json","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:34.927926Z","level":"info","event":"Done. Returned value was: /opt/airflow/data/raw/weather_20251130_153434.json","logger":"airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator","filename":"python.py","lineno":215}
+{"timestamp":"2025-11-30T15:34:34.930862Z","level":"info","event":"Pushing xcom","ti":"RuntimeTaskInstance(id=UUID('019ad565-df75-79e8-aa8a-9dc02de2475e'), task_id='extract_raw', dag_id='ingest_weather', run_id='manual__2025-11-30T15:33:33+00:00', try_number=1, dag_version_id=UUID('019ad52c-10d9-74a3-af6e-00587c006290'), map_index=-1, hostname='6c446e616ddb', context_carrier={}, task=<Task(_PythonDecoratedOperator): extract_raw>, bundle_instance=LocalDagBundle(name=dags-folder), max_tries=1, start_date=datetime.datetime(2025, 11, 30, 15, 33, 40, 686697, tzinfo=datetime.timezone.utc), end_date=None, state=<TaskInstanceState.RUNNING: 'running'>, is_mapped=False, rendered_map_index=None)","logger":"task","filename":"task_runner.py","lineno":1360}
+{"timestamp":"2025-11-30T15:34:35.361467Z","level":"info","event":"Task instance in success state","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:35.373909Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","logger":"task.stdout"}
+{"timestamp":"2025-11-30T15:34:35.376148Z","level":"info","event":"Task operator:<Task(_PythonDecoratedOperator): extract_raw>","logger":"task.stdout"}
