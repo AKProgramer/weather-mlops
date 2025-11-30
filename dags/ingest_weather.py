@@ -131,10 +131,9 @@ def ingest_weather():
                 ["git", "commit", "-m", f"Add processed dataset {pathlib.Path(processed_path).name}"],
                 check=False
             )
-            # Uncomment when DVC remote is configured:
-            # subprocess.check_call(["dvc", "push"])
-            print(f"✅ Dataset versioned with DVC: {dvc_file}")
-            print("⚠️  Remember to configure DVC remote and enable 'dvc push'")
+            # Push to DVC remote
+            subprocess.check_call(["dvc", "push"])
+            print(f"✅ Dataset versioned and pushed with DVC: {dvc_file}")
             return dvc_file
         except subprocess.CalledProcessError as e:
             print(f"⚠️  DVC error: {e.stderr}")

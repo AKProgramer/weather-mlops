@@ -75,6 +75,7 @@ venv.bak/
 # Pyre type checker
 .pyre/
 
+
 # Data, logs, and artifacts
 logs/
 data/
@@ -91,6 +92,11 @@ data/
 *.joblib
 *.npy
 *.npz
+.env
+.env.*
+.envrc
+.env.example
+
 
 # DVC cache and lock files
 .dvc/
@@ -98,12 +104,15 @@ data/
 !.dvc/config
 !.dvcignore
 
+
 # MLflow artifacts
 mlruns/
 
+
 # Docker
 **/.docker/
-**/Dockerfile*
+Dockerfile.airflow
+
 
 # VSCode
 .vscode/
@@ -112,15 +121,14 @@ mlruns/
 .DS_Store
 Thumbs.db
 
-# Airflow
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
 
-# Ignore airflow logs and config
+# Airflow
+airflow.cfg
+airflow.db
+webserver_config.py
 logs/
 config/
+
 
 # Ignore model artifacts
 model/

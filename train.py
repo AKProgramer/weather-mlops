@@ -51,29 +51,50 @@ def train_and_log():
         y_aligned = Xy["__target__"]
         X_aligned = Xy.drop(columns=["__target__"])
 
-        if X_aligned.shape[0] < 2:
-            msg = f"Not enough data after cleaning to train model (n={X_aligned.shape[0]})."
+        if X_aligned.shape[0] < 4:
+            msg = f"Not enough data after cleaning to train/test split (n={X_aligned.shape[0]})."
             print(msg)
             mlflow.set_tag("training_skipped", "true")
             mlflow.log_param("num_rows_after_clean", int(X_aligned.shape[0]))
             return
 
+        # Train/test split
+        from sklearn.model_selection import train_test_split
+        X_train, X_test, y_train, y_test = train_test_split(
+            X_aligned, y_aligned, test_size=0.2, random_state=42
+        )
+
+        mlflow.log_param("train_size", int(X_train.shape[0]))
+        mlflow.log_param("test_size", int(X_test.shape[0]))
+
+
         model = LinearRegression()
 
         try:
-            model.fit(X_aligned, y_aligned)
-            preds = model.predict(X_aligned)
+            model.fit(X_train, y_train)
 
-            mse = mean_squared_error(y_aligned, preds)
-            rmse = float(np.sqrt(mse))
-            mae = mean_absolute_error(y_aligned, preds)
-            r2 = r2_score(y_aligned, preds)
+            # Train metrics
+            train_preds = model.predict(X_train)
+            train_mse = mean_squared_error(y_train, train_preds)
+            train_rmse = float(np.sqrt(train_mse))
+            train_mae = mean_absolute_error(y_train, train_preds)
+            train_r2 = r2_score(y_train, train_preds)
+
+            # Test metrics
+            test_preds = model.predict(X_test)
+            test_mse = mean_squared_error(y_test, test_preds)
+            test_rmse = float(np.sqrt(test_mse))
+            test_mae = mean_absolute_error(y_test, test_preds)
+            test_r2 = r2_score(y_test, test_preds)
 
             # Log metrics
             mlflow.log_param("model_type", "LinearRegression")
-            mlflow.log_metric("rmse", rmse)
-            mlflow.log_metric("mae", mae)
-            mlflow.log_metric("r2", r2)
+            mlflow.log_metric("train_rmse", train_rmse)
+            mlflow.log_metric("train_mae", train_mae)
+            mlflow.log_metric("train_r2", train_r2)
+            mlflow.log_metric("test_rmse", test_rmse)
+            mlflow.log_metric("test_mae", test_mae)
+            mlflow.log_metric("test_r2", test_r2)
             mlflow.log_param("num_rows_after_clean", int(X_aligned.shape[0]))
 
             # ---- DAGSHUB SAFE MODEL LOGGING ----
@@ -84,7 +105,7 @@ def train_and_log():
             # Upload model folder as artifacts instead of using model registry
             mlflow.log_artifact(local_model_path)
 
-            print(f"Logged run: RMSE={rmse:.3f}, MAE={mae:.3f}, R2={r2:.3f}")
+            print(f"Logged run: TRAIN_RMSE={train_rmse:.3f}, TEST_RMSE={test_rmse:.3f}, TRAIN_R2={train_r2:.3f}, TEST_R2={test_r2:.3f}")
 
         except Exception as e:
             mlflow.set_tag("training_error", str(e))

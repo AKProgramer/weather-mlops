@@ -1,7 +1,8 @@
-# Custom Airflow Dockerfile for your MLOps stack
-FROM apache/airflow:3.1.3
-
-USER airflow
-
-# Install required Python packages
-RUN pip install --no-cache-dir pandas requests ydata-profiling mlflow dvc[s3] pyarrow fastparquet
+# Dockerfile for FastAPI model serving
+FROM python:3.12-slim
+WORKDIR /app
+COPY serve.py ./
+COPY model ./model
+RUN pip install fastapi uvicorn scikit-learn numpy pandas
+EXPOSE 8000
+CMD ["uvicorn", "serve:app", "--host", "0.0.0.0", "--port", "8000"]
