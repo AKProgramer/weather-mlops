@@ -1,8 +1,0 @@
-{"timestamp":"2025-11-30T15:34:07.550001Z","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
-{"timestamp":"2025-11-30T15:34:07.556852Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/ingest_weather.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
-{"timestamp":"2025-11-30T15:34:15.196767Z","level":"info","event":"Pandas backend loaded 2.1.4","logger":"visions.backends","filename":"__init__.py","lineno":14}
-{"timestamp":"2025-11-30T15:34:15.232491Z","level":"info","event":"Numpy backend loaded 1.26.4","logger":"visions.backends","filename":"__init__.py","lineno":25}
-{"timestamp":"2025-11-30T15:34:15.239723Z","level":"info","event":"Pyspark backend NOT loaded","logger":"visions.backends","filename":"__init__.py","lineno":37}
-{"timestamp":"2025-11-30T15:34:15.240626Z","level":"info","event":"Python backend loaded","logger":"visions.backends","filename":"__init__.py","lineno":43}
-{"timestamp":"2025-11-30T15:34:20.303866Z","level":"error","event":"Server indicated the task shouldn't be running anymore. Terminating process","detail":{"detail":{"reason":"not_found","message":"Task Instance not found"}},"logger":"task"}
-{"timestamp":"2025-11-30T15:34:20.606100Z","level":"error","event":"Task killed!","logger":"task"}
