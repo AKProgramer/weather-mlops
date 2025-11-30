@@ -6,3 +6,4 @@ dvc
 pyarrow
 fastparquet
 ydata-profiling
+httpx
